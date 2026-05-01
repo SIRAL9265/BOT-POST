@@ -1,0 +1,27 @@
+name: Auto Send Foodmala
+
+on:
+  schedule:
+    # Berjalan setiap 2 jam (00:00, 02:00, dst)
+    - cron: '0 */2 * * *'
+  workflow_dispatch: # Tombol untuk menjalankan manual
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        run: python foodmala.py
